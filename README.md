@@ -1,1 +1,68 @@
 # End-cloud-Collaborative-Intelligent-Pet-Feeding-System
+# 🐾 端云协同的智能宠物投喂系统 (Intelligent Pet Feeding System)
+
+![STM32](https://img.shields.io/badge/MCU-STM32F103-blue.svg) 
+![MQTT](https://img.shields.io/badge/Protocol-MQTT-green.svg) 
+![OneNET](https://img.shields.io/badge/Cloud-OneNET-orange.svg)
+![App](https://img.shields.io/badge/App-Android-brightgreen.svg)
+
+> 📖 **项目简介**  
+> 本项目是一个基于 **STM32 + OneNET + MQTT + Android** 的全链路物联网实战项目。旨在解决宠物日常无人看护时的科学喂养问题，打通了“端（硬件感知）- 云（物联网平台）- 用（移动端App）”的全栈数据链路。系统不仅支持高精度的定时定量闭环投喂，还能实时监测并调控宠物舱内的温湿度环境。
+
+---
+
+## ✨ 核心亮点功能
+
+*   ⚖️ **高精度“定时定量”闭环投喂**
+    *   基于 RTC 实时时钟实现精准的定时触发。
+    *   结合 HX711 称重传感器与舵机反馈，组成闭环控制系统，彻底解决传统投喂器“出粮不准、易卡粮”的痛点。
+*   🌡️ **多源感知与环境异常自适应调控**
+    *   集成 DHT11 温湿度传感器与红外传感器，实时采集宠物舱环境与宠物靠近状态。
+    *   具备自动化阈值触发机制（如检测到超温，自动启动降温风扇等外设），实现环境异常的自动干预。
+*   🌐 **低延迟稳定端云通信链路**
+    *   采用 ESP8266 Wi-Fi 模块，基于轻量级 MQTT 协议接入中国移动 OneNET 物联网云平台。
+    *   实现底层多维度传感器数据的实时上报，以及对下行控制指令的高效、精准解析。
+*   📱 **移动端全栈可视化交互**
+    *   使用 APP Inventor 独立开发配套的 Android 移动端应用。
+    *   支持设备运行状态的**可视化大屏展示**、自动化**安全阈值的动态配置**，以及跨网段的**远程智控**功能。
+
+---
+
+## 🛠️ 硬件架构与物料清单
+
+| 模块分类 | 具体型号 / 规格 | 功能描述 |
+| :--- | :--- | :--- |
+| **主控芯片** | STM32F103C8T6 | 核心运算、多任务逻辑处理与外设调度 |
+| **网络模块** | ESP8266 (AT固件) | 负责 Wi-Fi 联网，与 OneNET 服务器建立 MQTT 长连接 |
+| **称重模块** | HX711 + 压力悬臂梁 | 高精度读取余粮与单次投喂克数 |
+| **环境传感** | DHT11 | 采集舱内实时温湿度 |
+| **状态传感** | 红外避障传感器 | 检测宠物是否靠近食盆或储粮桶余量报警 |
+| **执行机构** | SG90 / MG995 舵机 | 控制出粮口阀门的开合角度与时间 |
+| **时间模块** | 内部/外部 RTC | 提供走时不间断的系统本地时间 |
+
+*(💡 提示：可以在这里插入一张你的系统硬件连接图或实物照片)*
+<!-- ![硬件实物图](./docs/hardware_pic.jpg) -->
+
+---
+
+## 💻 软件框架与开发环境
+
+*   **下位机开发**：Keil MDK 5 (C语言) + 标准库 / HAL 库
+*   **云端平台**：OneNET 平台 (多协议接入 - MQTT)
+*   **上位机应用**：MIT App Inventor (Android APK 导出)
+*   **通信协议**：JSON 格式数据解析 (cJSON) + MQTT 3.1.1
+
+---
+
+## 📂 目录结构说明
+
+```text
+├── App_Project/           # Android 移动端工程文件 (App Inventor 源码/APK)
+├── Hardware/              # 原理图、PCB设计文件 (如适用)
+├── STM32_Code/            # STM32 下位机核心代码
+│   ├── CORE/              # 内核文件
+│   ├── HARDWARE/          # 底层传感器驱动 (HX711, DHT11, 舵机, ESP8266等)
+│   ├── NET/               # MQTT 协议与 OneNET 接入逻辑
+│   ├── SYSTEM/            # 延时、串口等系统级组件
+│   └── USER/              # Main 函数与业务逻辑层
+└── README.md              # 项目说明文档
